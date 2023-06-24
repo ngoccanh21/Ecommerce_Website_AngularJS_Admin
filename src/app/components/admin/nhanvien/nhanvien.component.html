@@ -1,0 +1,121 @@
+<app-header></app-header>
+<app-menu-left></app-menu-left>
+<!-- PAGE CONTAINER-->
+<div class="page-container">
+    <!-- MAIN CONTENT-->
+    <div class="main-content">
+        <div class="section__content section__content--p30">
+            <div class="container-fluid">
+                <h1 style="text-transform: uppercase">Quản lý nhân viên</h1>
+                <p><button style="text-transform: capitalize; font-size: 20px; color: rgb(237, 21, 21);" type="button" (click)="openForm()" data-bs-toggle="modal" data-bs-target="#exampleModal">thêm mới</button></p>
+                <div class="row m-t-30">
+                    <div class="col-md-12">
+                        <!-- DATA TABLE-->
+                        <div class="table-responsive m-b-40">
+                            <table class="table table-borderless table-data3">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Tên nhân viên</th>
+                                        <th>ngày sinh</th>
+                                        <th>Só điện thoại</th>
+                                        <th>Giới tính</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Email</th>
+                                        <th>Vị trí làm việc</th>
+                                        <th colspan="2">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let item of nhanviens;let i = index">
+                                    <tr>
+                                        <td>{{i+1}}</td>
+                                        <td>{{item['tenNV']}}</td>
+                                        <td>{{item.ngaySinh}}</td>
+                                        <td>{{item.sdt}}</td>
+                                        <td>{{item.gt}}</td>
+                                        <td>{{item.queQuan}}</td>
+                                        <td>{{item.email}}</td>
+                                        <td>{{item.capbac}}</td>
+                                        <td><button type="button" class="btn btn-info fa fa-pencil" (click)="onEdit(item)" data-bs-toggle="modal" data-bs-target="#exampleModal">&nbsp;</button></td>
+                                        <td><button class="btn btn-danger fa fa-trash" (click)="deletenhanvien(item.id)">&nbsp;</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- END DATA TABLE-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="copyright">
+                            <p>Bản quyền thuộc về <a
+                                    href="">MINOSS.com</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- thêm, sửa -->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tạo mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="formValue">
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Tên nhân viên</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="tenNV">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Ngày sinh</label>
+                            <input type="date" class="form-control" id="recipient-name" formControlName="ngaySinh">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="sdt">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Giới tính</label>
+                            <select name="" id="recipient-name" formControlName="gt" class="form-control">
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" id="recipient-name" formControlName="gt"> -->
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Địa chỉ</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="queQuan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Email</label>
+                            <input type="email" class="form-control" id="recipient-name" formControlName="email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Vị trí làm việc</label>
+                            <select name="" id="recipient-name" formControlName="capbac" class="form-control">
+                                <option value="Quản lí">Quản lí</option>
+                                <option value="Kế toán">Kế toán</option>
+                                <option value="Nhân viên kho">Nhân viên kho</option>
+                                <option value="Nhân viên bán hàng">Nhân viên bán hàng</option>
+                                <option value="Nhân viên dọn dẹp">Nhân viên dọn dẹp</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" id="recipient-name" formControlName="capbac"> -->
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" *ngIf="showAdd" (click)="addnhanvien()">Add</button>
+                    <button type="button" class="btn btn-primary" *ngIf="showUpdate"
+                        (click)="updatenhanvien()">update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

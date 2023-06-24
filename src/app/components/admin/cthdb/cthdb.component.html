@@ -1,0 +1,123 @@
+<app-header></app-header>
+<app-menu-left></app-menu-left>
+<!-- PAGE CONTAINER-->
+<div class="page-container">
+    <!-- MAIN CONTENT-->
+    <div class="main-content">
+        <div class="section__content section__content--p30">
+            <div class="container-fluid">
+                <h1 style="text-transform: uppercase">Chi tiết hoá đơn bán</h1>
+                <div>
+                    <!-- <button style="text-transform: capitalize; font-size: 20px; color: rgb(237, 21, 21);" type="button" (click)="openForm()" data-bs-toggle="modal" data-bs-target="#exampleModal">thêm mới</button> -->
+                    <input class="form-control mr-sm-2" type="text" placeholder="Nhập thông tin cần tìm kiếm" style="width: 700px;margin: 10px 0px 10px 100px;border-radius: 20px;display: inline-block;"
+                              [(ngModel)]="userFilter.tenSP"   aria-label="Search">
+                </div>
+                <div class="row m-t-30">
+                    <div class="col-md-12">
+                        <!-- DATA TABLE-->
+                        <div class="table-responsive m-b-40">
+                            <table class="table table-borderless table-data3">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Ảnh sản phẩm</th>
+                                        <th>Giá Bán</th>
+                                        <th>Số lượng mua</th>
+                                        <th>Thành tiền</th>
+                                        <th>Kích cỡ</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let item of cthdbs|filterBy:userFilter|paginate
+                                : {itemsPerPage: 5,currentPage: page,totalItems: total}; let i = index">
+                                    <tr>
+                                        <td>{{ (page - 1) * 5 + i + 1 }}</td>
+                                        <td>{{item['tenSP']}}</td>
+                                        <td><img src="http://localhost:18058/images/{{item.anh}}" style="height: 80px; width: 80px;" alt=""></td>
+                                        <td>{{item.giaBan | number}}</td>
+                                        <td>{{item.soLuong}}</td>
+                                        <td>{{item.thanhTien | number}}</td>
+                                        <td>{{item.size}}</td>
+                                        
+                                        <td><button type="button" class="btn btn-info fa fa-eye" (click)="onEdit(item)" data-bs-toggle="modal" data-bs-target="#exampleModal">&nbsp;</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls previousLabel="Prev" nextLabel="Next"
+                                (pageChange)="page = $event"></pagination-controls>
+                        </div>
+                        <!-- END DATA TABLE-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="copyright">
+                            <p>Bản quyền thuộc về <a
+                                    href="">MINOSS.com</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- thêm, sửa -->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="formValue">
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Tên sản phẩm</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="tenSP">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Hình Ảnh </label> <br />
+                            <input type="text" class="form-control" id="recipient-name" formControlName="anh">
+                            <!-- <img [src]="PhotoFilePath" height="140px;" width="150px;" style="padding-right: 10px" />
+                            <input type="file" (change)="uploadPhoto($event)" class="mt-2" /> -->
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Giá sản phẩm</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="giaBan">
+                        </div> 
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Số lượng bán</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="soLuong">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Thành Tiền</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="thanhTien">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Kích cỡ</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="size">
+                          </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">id hoá đơn bán</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="id_hdb">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">id sản phẩm</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="id_sp">
+                        </div>
+
+    
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary" *ngIf="showAdd" (click)="addsanpham()">Add</button>
+                    <button type="button" class="btn btn-primary" *ngIf="showUpdate"
+                        (click)="updatesanpham()">update</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,114 @@
+<app-header></app-header>
+<app-menu-left></app-menu-left>
+<!-- PAGE CONTAINER-->
+<div class="page-container">
+    <!-- MAIN CONTENT-->
+    <div class="main-content">
+        <div class="section__content section__content--p30">
+            <div class="container-fluid">
+                <h1 style="text-transform: uppercase">Quản lý tin tức</h1>
+                <div>
+                    <button style="text-transform: capitalize; font-size: 20px; color: rgb(237, 21, 21);" type="button" (click)="openForm()" data-bs-toggle="modal" data-bs-target="#exampleModal">thêm mới</button>
+                    <input class="form-control mr-sm-2" type="text" placeholder="Nhập thông tin cần tìm kiếm" style="width: 700px;margin: 10px 0px 10px 100px;border-radius: 20px;display: inline-block;"
+                              [(ngModel)]="userFilter.tieuDe"   aria-label="Search">
+                </div>
+                <div class="row m-t-30">
+                    <div class="col-md-12">
+                        <!-- DATA TABLE-->
+                        <div class="table-responsive m-b-40">
+                            <table class="table table-borderless table-data3">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Tiêu đề</th>
+                                        <th>Nội dung 1</th>
+                                        <th>Nội dung 2</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Ảnh 1</th>
+                                        <th>Ảnh 2</th>
+                                        <th colspan="2">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let item of tintucs|filterBy:userFilter|paginate
+                                : {itemsPerPage: 2,currentPage: page,totalItems: total}; let i = index">
+                                    <tr>
+                                        <td>{{ (page - 1) * 2 + i + 1 }}</td>
+                                        <td>{{item['tieuDe']}}</td>
+                                        <td>{{item.noiDung1}}</td>
+                                        <td>{{item.noiDung2}}</td>
+                                        <td>{{item.ngayTao}}</td>
+                                        <td><img src="http://localhost:18058/images/{{item.anh}}" alt="" style="height: 80px; width: 80px;"></td>
+                                        <td><img src="http://localhost:18058/images/{{item.anh2}}" alt="" style="height: 80px; width: 80px;"></td>
+                                        <td><button type="button" class="btn btn-info fa fa-pencil" (click)="onEdit(item)" data-bs-toggle="modal" data-bs-target="#exampleModal">&nbsp;</button></td>
+                                        <td><button class="btn btn-danger fa fa-trash" (click)="deletetintuc(item.id)">&nbsp;</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls previousLabel="Prev" nextLabel="Next"
+                                (pageChange)="page = $event"></pagination-controls>
+                        </div>
+                        <!-- END DATA TABLE-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="copyright">
+                            <p>Bản quyền thuộc về <a
+                                    href="">MINOSS.com</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- thêm, sửa -->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tạo mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="formValue">
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Tiêu đề</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="tieuDe">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Nội dung 1</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="noiDung1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Nội dung 2</label>
+                            <input type="text" class="form-control" id="recipient-name" formControlName="noiDung2">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Ngày tạo</label>
+                            <input type="date" class="form-control" id="recipient-name" formControlName="ngayTao">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Ảnh chính</label>
+                            <!-- <input type="text" class="form-control" id="recipient-name" formControlName="anh"> -->
+                            <img [src]="PhotoFilePath" height="140px;" width="150px;" style="padding-right: 10px" />
+                            <input type="file" (change)="uploadPhoto($event)" class="mt-2" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Ảnh phụ</label>
+                            <img [src]="PhotoFilePath2" height="140px;" width="150px;" style="padding-right: 10px" />
+                            <input type="file" (change)="uploadPhoto2($event)" class="mt-2" />
+                          </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" *ngIf="showAdd" (click)="addtintuc()">Add</button>
+                    <button type="button" class="btn btn-primary" *ngIf="showUpdate"
+                        (click)="updatetintuc()">update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
